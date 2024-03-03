@@ -1,0 +1,6 @@
+sqlalchemy
+django
+ipdb
+pymysql
+psycopg2
+pytest
