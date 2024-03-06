@@ -164,20 +164,36 @@ def test_question6(session):
     
 def test_question7(session):
     # test query
-    query_result = (
-        session.query(Sailor.rating, func.min(Sailor.sname))
+    min_subquery = (
+        session.query(Sailor.rating, func.min(Sailor.age).label('min_age'))
         .group_by(Sailor.rating)
-        .order_by(Sailor.rating)
+        .subquery()
+    )
+
+    query_result = (
+        session.query(min_subquery.c.rating, Sailor.sname, min_subquery.c.min_age)
+        .join(min_subquery, and_(Sailor.age == min_subquery.c.min_age, 
+            Sailor.rating == min_subquery.c.rating))
+        .group_by(min_subquery.c.rating, Sailor.sname, min_subquery.c.min_age)
+        .order_by(min_subquery.c.rating, min_subquery.c.min_age)
         .all()
     )
     
     expected_result = [
-        (1, 'brutus'),
-        (3, 'art'),
-        (7, 'dusting'),
-        (8, 'andy'),
-        (9, 'dan'),
-        (10, 'jit')
+        (1, 'brutus', 33),
+        (1, 'scruntus', 33),
+        (3, 'art', 25),
+        (3, 'dye', 25),
+        (7, 'horatio', 16),
+        (7, 'ossola', 16),
+        (8, 'andy', 25),
+        (8, 'stum', 25),
+        (9, 'dan', 25),
+        (9, 'horatio', 25),
+        (10, 'jit', 35),
+        (10, 'rusty', 35),
+        (10, 'shaun', 35),
+        (10, 'zorba', 35)
     ]
     assert query_result == expected_result
 

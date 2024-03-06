@@ -119,18 +119,32 @@ WHERE rating = 10;
 --  35.0000000000000000
 
 -- 7. For each rating, find the name and id of the youngest sailor.
+-- please do this ): --
 
-SELECT sailors.rating, MIN(sailors.sname) 
-FROM sailors GROUP BY sailors.rating ORDER BY sailors.rating; 
+SELECT DISTINCT ex.rating, sailors.sname, ex.min_age
+FROM sailors INNER JOIN ( SELECT sailors.rating, MIN(sailors.age) min_age 
+FROM sailors GROUP BY sailors.rating) ex
+ON sailors.age = ex.min_age AND ex.rating = sailors.rating 
+GROUP BY ex.rating, sailors.sname, ex.min_age
+ORDER BY ex.rating, ex.min_age; 
 
---  rating |   min   
--- --------+---------
---       1 | brutus
---       3 | art
---       7 | dusting
---       8 | andy
---       9 | dan
---      10 | jit
+
+--  rating |  sname   | min_age 
+-- --------+----------+---------
+--       1 | brutus   |      33
+--       1 | scruntus |      33
+--       3 | art      |      25
+--       3 | dye      |      25
+--       7 | horatio  |      16
+--       7 | ossola   |      16
+--       8 | andy     |      25
+--       8 | stum     |      25
+--       9 | dan      |      25
+--       9 | horatio  |      25
+--      10 | jit      |      35
+--      10 | rusty    |      35
+--      10 | shaun    |      35
+--      10 | zorba    |      35
 
 
 -- 8. Select, for each boat, the sailor who made the highest number of reservations for that boat.
