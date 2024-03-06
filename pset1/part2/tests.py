@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine, func, distinct, and_, not_, select
 from sqlalchemy.orm import sessionmaker
-from create_tables import Reserve, Boat, Sailor  # Assuming your SQLAlchemy models are defined in a module named your_module
+from create_tables import Reserve, Boat, Sailor
 
 @pytest.fixture
 def session():
@@ -91,7 +91,6 @@ def test_question3(session):
         .all()
     )
 
-    # breakpoint()
     # Assert the query result
     expected_result = [
         ('emilio', 23), 
@@ -111,8 +110,8 @@ def test_question4(session):
     .order_by(func.count().desc())
     .limit(1)
     .all()
-)
-    # breakpoint()
+    )
+    
     # Assert the query result
     expected_result = [('Clipper', 104, 5)]
     assert query_result == expected_result
@@ -142,7 +141,6 @@ def test_question5(session):
         .all()
     )
 
-    # breakpoint()
     # Assert the query result
     expected_result = [
         ('horatio', 74), 
@@ -198,7 +196,6 @@ def test_question7(session):
     assert query_result == expected_result
 
 def test_question8(session):
-    # Define the maximum reservations subquery using ORM query constructs
     max_reservations_subquery = (
         session.query(func.count().label('max_rsvps'))
         .filter(Reserve.bid == Boat.bid)
@@ -211,7 +208,6 @@ def test_question8(session):
         .as_scalar()
     )
 
-    # Main query to select distinct boats, sailors, and count of reservations
     query_result = (
         session.query(distinct(Boat.bid), Sailor.sname, func.count().label('rsvps'))
         .join(Reserve, Boat.bid == Reserve.bid)

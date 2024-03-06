@@ -32,8 +32,7 @@ sailors_data = [
     Sailor(sid=89, sname='dye', rating=3, age=25),
     Sailor(sid=90, sname='vin', rating=3, age=63)
 ]
-
-# session.add_all(sailors_data)
+session.add_all(sailors_data)
 
 # Insert data into reserves table
 reserves_data = [
@@ -87,7 +86,7 @@ boats_data = [
     Boat(bid=112, bname='Sooney', color='red', length=28)
 ]
 
-# session.add_all(boats_data)
+session.add_all(boats_data)
 
 # Commit the transaction
 session.commit()
