@@ -19,6 +19,7 @@ data['Titles'] = data['Titles'].str.split(n=1).str[1]   # get rid of ranking in 
 data.reset_index(inplace=True)
 data = data.rename(columns={"index": "_id"})
 data['_id'] = data['_id'] + 1                           # just to make ranking make sense
+data.to_csv('top250_mongo.csv', index=False, encoding='utf-8')
 data_dict = data.to_dict("records")
 
 # remove all data from collection
