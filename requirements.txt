@@ -4,3 +4,10 @@ ipdb
 pymysql
 psycopg2
 pytest
+
+beautifulsoup4
+lxml
+pandas 
+pyarrow
+selenium
+pymongo
